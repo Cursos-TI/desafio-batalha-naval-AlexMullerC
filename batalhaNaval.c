@@ -49,9 +49,6 @@ int tabuleiro[10][10]; // matriz 10x10 para representar o tabuleiro
         }
         printf("\n");
     }
-
-    return 0;
-}
     
 
     // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
