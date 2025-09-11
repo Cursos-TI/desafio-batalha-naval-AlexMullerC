@@ -1,60 +1,114 @@
 #include <stdio.h>
-
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
+#include <stdlib.h>
+#include <time.h>
 
 int main() {
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
+    int linhas = 10, colunas = 10;
+    int tabuleiro[linhas][colunas];
+    int navio = 3;
+    int tamanho = 3;
 
-int tabuleiro[10][10]; // matriz 10x10 para representar o tabuleiro
-    int i, j;
-
-    // Inicializa o tabuleiro com 0
-    for (i = 0; i < 10; i++) {
-        for (j = 0; j < 10; j++) {
+    // Inicializa tabuleiro full água == 0
+    for (int i = 0; i < linhas; i++) {
+        for (int j = 0; j < colunas; j++) {
             tabuleiro[i][j] = 0;
         }
     }
 
-    // Coordenadas iniciais dos navios
-    int linha_horizontal = 2; // linha do navio horizontal
-    int coluna_horizontal = 4; // coluna inicial do navio horizontal
-    int linha_vertical = 6; // linha inicial do navio vertical
-    int coluna_vertical = 1; // coluna do navio vertical
-    int tamanho_navio = 3; // tamanho fixo dos navios
+    srand(time(0));
 
-    // Posicionandoo navio horizontal (valor 3)
-    for (i = 0; i < tamanho_navio; i++) {
-        if (coluna_horizontal + i < 10) {
-            tabuleiro[linha_horizontal][coluna_horizontal + i] = 3;
+    // ---- navio horizontal ----
+    int colocado = 0; //começa assumindo que não foi colocado o navio
+    while (!colocado) {
+        int x = rand() % linhas;
+        int y = rand() % (colunas - tamanho); // garante que não passa da borda
+
+        // Verifica se espaço está livre
+        int livre = 1; //começa assumindo que está livre a posição
+        for (int k = 0; k < tamanho; k++) { // percorre 3 posições
+            if (tabuleiro[x][y + k] != 0) { // verifica se as 3 posições estão diferentes de 0, se alguma não for zero, assume que não está livre, livre = 0
+                livre = 0;
+            }
+        } 
+        //no caso de livre 0, o loop se reinicia
+        if (livre) { //se estiver livre ele adiciona o navio
+            for (int k = 0; k < tamanho; k++) {
+                tabuleiro[x][y + k] = navio;
+            }
+            colocado = 1; //informa que foi colocado para sair do loop de while
         }
     }
 
-    // Posicionando navio vertical (valor 3)
-    for (i = 0; i < tamanho_navio; i++) {
-        if (linha_vertical + i < 10) {
-            tabuleiro[linha_vertical + i][coluna_vertical] = 3;
+    // ---- navio vertical ----
+    colocado = 0;
+    while (!colocado) {
+        int x = rand() % (linhas - tamanho);
+        int y = rand() % colunas;
+
+        int livre = 1;
+        for (int k = 0; k < tamanho; k++) {
+            if (tabuleiro[x + k][y] != 0) {
+                livre = 0;
+            }
+        }
+
+        if (livre) {
+            for (int k = 0; k < tamanho; k++) {
+                tabuleiro[x + k][y] = navio;
+            }
+            colocado = 1;
         }
     }
 
-    // tabuleiro completo
-    printf("=== TABULEIRO BATALHA NAVAL ===\n");
-    for (i = 0; i < 10; i++) {
-        for (j = 0; j < 10; j++) {
+    // ---- navio diagonal 1 ----
+    colocado = 0;
+    while (!colocado) {
+        int x = rand() % (linhas - tamanho);
+        int y = rand() % (colunas - tamanho);
+
+        int livre = 1;
+        for (int k = 0; k < tamanho; k++) {
+            if (tabuleiro[x + k][y + k] != 0) {
+                livre = 0;
+            }
+        }
+
+        if (livre) {
+            for (int k = 0; k < tamanho; k++) {
+                tabuleiro[x + k][y + k] = navio;
+            }
+            colocado = 1;
+        }
+    }
+
+    // ---- navio diagonal 2 ----
+    colocado = 0;
+    while (!colocado) {
+        int x = rand() % (linhas - tamanho);
+        int y = rand() % (colunas - tamanho);
+
+        int livre = 1;
+        for (int k = 0; k < tamanho; k++) {
+            if (tabuleiro[x + k][y + k] != 0) {
+                livre = 0;
+            }
+        }
+
+        if (livre) {
+            for (int k = 0; k < tamanho; k++) {
+                tabuleiro[x + k][y + k] = navio;
+            }
+            colocado = 1;
+        }
+    }
+
+    // ---- Mostra tabuleiro ----
+    for (int i = 0; i < linhas; i++) {
+        for (int j = 0; j < colunas; j++) {
             printf("%d ", tabuleiro[i][j]);
         }
         printf("\n");
     }
-    
-
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
 
     // Nível Mestre - Habilidades Especiais com Matrizes
     // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
